@@ -1,0 +1,36 @@
+{
+	"name": "sms",
+	"version": "1.0.0",
+	"description": "Slightly Techie School Management System",
+	"main": "server.js",
+	"scripts": {
+		"start": "node server",
+		"server": "nodemon server"
+	},
+	"keywords": [
+		"sms"
+	],
+	"author": "armoako",
+	"license": "ISC",
+	"dependencies": {
+		"bcryptjs": "^2.4.3",
+		"cookie-parser": "^1.4.6",
+		"cors": "^2.8.5",
+		"dotenv": "^16.0.3",
+		"express": "^4.18.2",
+		"express-async-handler": "^1.2.0",
+		"express-mongo-sanitize": "^2.2.0",
+		"express-rate-limit": "^7.4.0",
+		"helmet": "^7.1.0",
+		"hpp": "^0.2.3",
+		"jsonwebtoken": "^8.5.1",
+		"mongoose": "^6.7.0"
+	},
+	"devDependencies": {
+		"@types/cookie-parser": "^1.4.7",
+		"@types/cors": "^2.8.17",
+		"@types/hpp": "^0.2.6",
+		"morgan": "^1.10.0",
+		"nodemon": "^2.0.20"
+	}
+}
