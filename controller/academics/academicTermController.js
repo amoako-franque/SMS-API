@@ -3,7 +3,7 @@ const AcademicTerm = require("../../model/Academic/AcademicTerm")
 const Admin = require("../../model/Staff/Admin")
 
 exports.createAcademicTerm = asyncHandler(async (req, res) => {
-	const userId = req?.userAuth?._id
+	const userId = req?.auth?._id
 	const { name, description, duration } = req.body
 	const academicTerm = await AcademicTerm.findOne({ name })
 	if (academicTerm) {
@@ -16,7 +16,7 @@ exports.createAcademicTerm = asyncHandler(async (req, res) => {
 		createdBy: userId,
 	})
 
-	const admin = await Admin.findById(req.userAuth._id)
+	const admin = await Admin.findById(req.auth._id)
 	admin.academicTerms.push(academicTermCreated._id)
 	await admin.save()
 	res.status(201).json({
@@ -63,7 +63,7 @@ exports.updateAcademicTermsById = asyncHandler(async (req, res) => {
 			name,
 			description,
 			duration,
-			createdBy: req.userAuth._id,
+			createdBy: req.auth._id,
 		},
 		{
 			new: true,

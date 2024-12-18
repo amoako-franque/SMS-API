@@ -1,7 +1,7 @@
 const Teacher = require("../model/Staff/Teacher")
 
-const isTeacher = async (req, res, next) => {
-	const userId = req?.userAuth?._id
+exports.isTeacher = async (req, res, next) => {
+	const userId = req?.auth?._id
 	const teacher = await Teacher.findById(userId)
 
 	if (teacher?.role === "teacher") {
@@ -10,5 +10,3 @@ const isTeacher = async (req, res, next) => {
 		next(new Error("Access Denied, Teachers only"))
 	}
 }
-
-module.exports = isTeacher

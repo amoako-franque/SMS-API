@@ -2,12 +2,12 @@ const asyncHandler = require("express-async-handler")
 const Admin = require("../../model/Staff/Admin")
 const Teacher = require("../../model/Staff/Teacher")
 const generateToken = require("../../utils/generateToken")
-const { hashPassword, isPassMatched } = require("../../utils/helpers")
+const { hashPassword, isPassMatched } = require("../../utils/generateToken")
 
 exports.adminRegisterTeacher = asyncHandler(async (req, res) => {
 	const { name, email, password } = req.body
 
-	const adminFound = await Admin.findById(req.userAuth._id)
+	const adminFound = await Admin.findById(req.auth._id)
 	if (!adminFound) {
 		throw new Error("Admin not found")
 	}
@@ -106,7 +106,7 @@ exports.getTeacherByAdmin = asyncHandler(async (req, res) => {
 })
 
 exports.getTeacherProfile = asyncHandler(async (req, res) => {
-	const teacher = await Teacher.findById(req.userAuth?._id).select(
+	const teacher = await Teacher.findById(req.auth?._id).select(
 		"-password -createdAt -updatedAt"
 	)
 	if (!teacher) {
@@ -129,7 +129,7 @@ exports.teacherUpdateProfile = asyncHandler(async (req, res) => {
 
 	if (password) {
 		const teacher = await Teacher.findByIdAndUpdate(
-			req.userAuth._id,
+			req.auth._id,
 			{
 				email,
 				password: await hashPassword(password),
@@ -147,7 +147,7 @@ exports.teacherUpdateProfile = asyncHandler(async (req, res) => {
 		})
 	} else {
 		const teacher = await Teacher.findByIdAndUpdate(
-			req.userAuth._id,
+			req.auth._id,
 			{
 				email,
 				name,

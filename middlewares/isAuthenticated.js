@@ -1,9 +1,9 @@
 const verifyToken = require("../utils/verifyToken")
 
-const isAuthenticated = (model) => {
+exports.isAuthenticated = (model) => {
 	return async (req, res, next) => {
-		const headerObj = req.headers
-		const token = headerObj?.authorization?.split(" ")[1]
+		const authHeader = req.headers
+		const token = authHeader?.authorization?.split(" ")[1]
 
 		const verifiedToken = verifyToken(token)
 		if (verifiedToken) {
@@ -11,13 +11,11 @@ const isAuthenticated = (model) => {
 				.findById(verifiedToken.id)
 				.select("name email role")
 
-			req.userAuth = user
+			req.auth = user
 			next()
 		} else {
-			const err = new Error("Token expired/invalid")
+			const err = new Error("Expired Token/Invalid Token")
 			next(err)
 		}
 	}
 }
-
-module.exports = isAuthenticated

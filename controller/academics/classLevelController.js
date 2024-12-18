@@ -13,10 +13,10 @@ exports.createClassLevel = asyncHandler(async (req, res) => {
 	const classCreated = await ClassLevel.create({
 		name,
 		description,
-		createdBy: req.userAuth._id,
+		createdBy: req.auth._id,
 	})
 
-	const admin = await Admin.findById(req.userAuth._id)
+	const admin = await Admin.findById(req.auth._id)
 	admin.classLevels.push(classCreated._id)
 
 	await admin.save()
@@ -58,7 +58,7 @@ exports.updateClassLevelById = asyncHandler(async (req, res) => {
 		{
 			name,
 			description,
-			createdBy: req.userAuth._id,
+			createdBy: req.auth._id,
 		},
 		{
 			new: true,

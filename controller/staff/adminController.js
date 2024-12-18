@@ -3,7 +3,7 @@ const bcrypt = require("bcryptjs")
 const Admin = require("../../model/Staff/Admin")
 const generateToken = require("../../utils/generateToken")
 const verifyToken = require("../../utils/verifyToken")
-const { hashPassword, isPassMatched } = require("../../utils/helpers")
+const { hashPassword, isPassMatched } = require("../../utils/generateToken")
 const Teacher = require("../../model/Staff/Teacher")
 const Exam = require("../../model/Academic/Exam")
 
@@ -60,7 +60,7 @@ exports.fetchAdmins = asyncHandler(async (req, res) => {
 })
 
 exports.fetchAdminProfile = asyncHandler(async (req, res) => {
-	const admin = await Admin.findById(req.userAuth._id)
+	const admin = await Admin.findById(req.auth._id)
 		.select("-password -createdAt -updatedAt")
 		.populate("academicYears")
 		.populate("academicTerms")
@@ -90,7 +90,7 @@ exports.updateAdmin = asyncHandler(async (req, res) => {
 
 	if (password) {
 		const admin = await Admin.findByIdAndUpdate(
-			req.userAuth._id,
+			req.auth._id,
 			{
 				email,
 				password: await hashPassword(password),
@@ -108,7 +108,7 @@ exports.updateAdmin = asyncHandler(async (req, res) => {
 		})
 	} else {
 		const admin = await Admin.findByIdAndUpdate(
-			req.userAuth._id,
+			req.auth._id,
 			{
 				email,
 				name,

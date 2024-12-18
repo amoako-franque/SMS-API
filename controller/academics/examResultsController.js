@@ -3,7 +3,7 @@ const ExamResult = require("../../model/Academic/ExamResults")
 const Student = require("../../model/Academic/Student")
 
 exports.checkExamResultsByStudent = asyncHandler(async (req, res) => {
-	const studentFound = await Student.findById(req.userAuth?._id)
+	const studentFound = await Student.findById(req.auth?._id)
 	if (!studentFound) {
 		throw new Error("No Student Found")
 	}

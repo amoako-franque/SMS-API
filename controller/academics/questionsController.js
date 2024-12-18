@@ -23,7 +23,7 @@ exports.createQuestion = asyncHandler(async (req, res) => {
 		optionC,
 		optionD,
 		correctAnswer,
-		createdBy: req.userAuth._id,
+		createdBy: req.auth._id,
 	})
 
 	examFound.questions.push(questionCreated?._id)
@@ -71,7 +71,7 @@ exports.updateQuestionById = asyncHandler(async (req, res) => {
 			optionC,
 			optionD,
 			correctAnswer,
-			createdBy: req.userAuth._id,
+			createdBy: req.auth._id,
 		},
 		{
 			new: true,

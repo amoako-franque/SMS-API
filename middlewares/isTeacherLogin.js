@@ -2,20 +2,18 @@ const Admin = require("../model/Staff/Admin")
 const Teacher = require("../model/Staff/Teacher")
 const verifyToken = require("../utils/verifyToken")
 
-const isTeacherLogin = async (req, res, next) => {
-	const headerObj = req.headers
-	const token = headerObj?.authorization?.split(" ")[1]
+exports.isTeacherLogin = async (req, res, next) => {
+	const authHeader = req.headers
+	const token = authHeader?.authorization?.split(" ")[1]
 	const verifiedToken = verifyToken(token)
 	if (verifiedToken) {
 		const user = await Teacher.findById(verifiedToken.id).select(
 			"name email role"
 		)
-		req.userAuth = user
+		req.auth = user
 		next()
 	} else {
-		const err = new Error("Token expired/invalid")
+		const err = new Error("Expired Token/Invalid Token")
 		next(err)
 	}
 }
-
-module.exports = isTeacherLogin

@@ -4,8 +4,8 @@
 	"description": "Slightly Techie School Management System",
 	"main": "server.js",
 	"scripts": {
-		"start": "node server",
-		"server": "nodemon server"
+		"prod": "node server",
+		"dev": "nodemon server"
 	},
 	"keywords": [
 		"sms"

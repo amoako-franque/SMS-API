@@ -1,7 +1,13 @@
 const jwt = require("jsonwebtoken")
-
-const generateToken = (id) => {
-	return jwt.sign({ id }, process.env.JWT_TOKEN, { expiresIn: "7d" })
+const bcrypt = require("bcryptjs")
+exports.generateToken = (id) => {
+	return jwt.sign({ id }, process.env.SECRET_TOKEN, { expiresIn: "5d" })
 }
 
-module.exports = generateToken
+exports.hashPassword = async (password) => {
+	const salt = await bcrypt.genSalt(10)
+	return await bcrypt.hash(password, salt)
+}
+exports.isPassMatched = async (password, hash) => {
+	return await bcrypt.compare(password, hash)
+}

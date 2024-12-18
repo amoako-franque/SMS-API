@@ -18,7 +18,7 @@ exports.createExam = asyncHandler(async (req, res) => {
 		classLevel,
 	} = req.body
 
-	const teacherFound = await Teacher.findById(req.userAuth?._id)
+	const teacherFound = await Teacher.findById(req.auth?._id)
 	if (!teacherFound) {
 		throw new Error("Teacher not found")
 	}
@@ -41,7 +41,7 @@ exports.createExam = asyncHandler(async (req, res) => {
 		examType,
 		subject,
 		program,
-		createdBy: req.userAuth?._id,
+		createdBy: req.auth?._id,
 	})
 
 	teacherFound.examsCreated.push(examCreated._id)
@@ -114,7 +114,7 @@ exports.updateExamById = asyncHandler(async (req, res) => {
 			createdBy,
 			academicYear,
 			classLevel,
-			createdBy: req.userAuth._id,
+			createdBy: req.auth._id,
 		},
 		{
 			new: true,

@@ -13,10 +13,10 @@ exports.createYearGroup = asyncHandler(async (req, res) => {
 	const yearGroup = await YearGroup.create({
 		name,
 		academicYear,
-		createdBy: req.userAuth._id,
+		createdBy: req.auth._id,
 	})
 
-	const admin = await Admin.findById(req.userAuth._id)
+	const admin = await Admin.findById(req.auth._id)
 	if (!admin) {
 		throw new Error("Admin not found")
 	}
@@ -61,7 +61,7 @@ exports.updateYearGroupById = asyncHandler(async (req, res) => {
 		{
 			name,
 			academicYear,
-			createdBy: req.userAuth._id,
+			createdBy: req.auth._id,
 		},
 		{
 			new: true,

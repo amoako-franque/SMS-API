@@ -21,7 +21,7 @@ exports.createSubject = asyncHandler(async (req, res) => {
 		description,
 		academicTerm,
 		program: program._id,
-		createdBy: req.userAuth._id,
+		createdBy: req.auth._id,
 	})
 
 	res.status(201).json({
@@ -62,7 +62,7 @@ exports.updateSubjectById = asyncHandler(async (req, res) => {
 			name,
 			description,
 			academicTerm,
-			createdBy: req.userAuth._id,
+			createdBy: req.auth._id,
 		},
 		{
 			new: true,

@@ -14,10 +14,10 @@ exports.createAcademicYear = asyncHandler(async (req, res) => {
 		name,
 		fromYear,
 		toYear,
-		createdBy: req.userAuth._id,
+		createdBy: req.auth._id,
 	})
 	if (academicYearCreated) {
-		const admin = await Admin.findById(req.userAuth._id)
+		const admin = await Admin.findById(req.auth._id)
 		admin.academicYears.push(academicYearCreated._id)
 		await admin.save()
 		res.status(201).json({
@@ -63,7 +63,7 @@ exports.updateAcademicYearById = asyncHandler(async (req, res) => {
 			name,
 			fromYear,
 			toYear,
-			createdBy: req.userAuth._id,
+			createdBy: req.auth._id,
 		},
 		{
 			new: true,

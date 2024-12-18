@@ -4,16 +4,18 @@ const ExamResult = require("../../model/Academic/ExamResults")
 const Student = require("../../model/Academic/Student")
 const Admin = require("../../model/Staff/Admin")
 const generateToken = require("../../utils/generateToken")
-const { hashPassword, isPassMatched } = require("../../utils/helpers")
+const { hashPassword, isPassMatched } = require("../../utils/generateToken")
 
-//@desc  Admin Register Student
-//@route POST /api/students/admin/register
-//@access  Private Admin only
+/**
+ * @desc  Admin Register Student
+ * @route POST /api/v1/students/admin/register
+ * @access  Private Admin only
+ */
 
 exports.registerStudentByAdmin = asyncHandler(async (req, res) => {
 	const { name, email, password } = req.body
 	//find the admin
-	const adminFound = await Admin.findById(req.userAuth._id)
+	const adminFound = await Admin.findById(req.auth._id)
 	if (!adminFound) {
 		throw new Error("Admin not found")
 	}
@@ -42,9 +44,11 @@ exports.registerStudentByAdmin = asyncHandler(async (req, res) => {
 	})
 })
 
-//@desc    login  student
-//@route   POST /api/v1/students/login
-//@access  Public
+/**
+ * @desc    login  student
+ * @route   POST /api/v1/students/login
+ * @access  Public
+ */
 
 exports.loginStudent = asyncHandler(async (req, res) => {
 	const { email, password } = req.body
@@ -65,12 +69,14 @@ exports.loginStudent = asyncHandler(async (req, res) => {
 	}
 })
 
-//@desc    Student Profile
-//@route   GET /api/v1/students/profile
-//@access  Private Student only
+/**
+ * @desc    Student Profile
+ * @route   GET /api/v1/students/profile
+ * @access  Private Student only
+ */
 
 exports.fetchStudentProfile = asyncHandler(async (req, res) => {
-	const student = await Student.findById(req.userAuth?._id)
+	const student = await Student.findById(req.auth?._id)
 		.select("-password -createdAt -updatedAt")
 		.populate("examResults")
 	if (!student) {
@@ -106,9 +112,11 @@ exports.fetchStudentProfile = asyncHandler(async (req, res) => {
 	})
 })
 
-//@desc    Get all Students
-//@route   GET /api/v1/admin/students
-//@access  Private admin only
+/**
+ * @desc    Get all Students
+ * @route   GET /api/v1/admin/students
+ * @access  Private admin only
+ */
 
 exports.fetchAllStudentsByAdmin = asyncHandler(async (req, res) => {
 	const students = await Student.find()
@@ -119,9 +127,11 @@ exports.fetchAllStudentsByAdmin = asyncHandler(async (req, res) => {
 	})
 })
 
-//@desc    Get Single Student
-//@route   GET /api/v1/students/:studentID/admin
-//@access  Private admin only
+/**
+ * @desc    Get Single Student
+ * @route   GET /api/v1/admin/students/:studentID
+ * @access  Private admin only
+ */
 
 exports.fetchStudentByAdmin = asyncHandler(async (req, res) => {
 	const studentID = req.params.studentID
@@ -137,9 +147,13 @@ exports.fetchStudentByAdmin = asyncHandler(async (req, res) => {
 	})
 })
 
-//@desc    Student updating profile
-//@route    UPDATE /api/v1/students/update
-//@access   Private Student only
+/**
+ *
+ * @desc    Update Student Profile
+ * @route   PUT /api/v1/students/profile
+ * @access  Private
+ *
+ */
 
 exports.updateProfileByStudent = asyncHandler(async (req, res) => {
 	const { email, password } = req.body
@@ -155,7 +169,7 @@ exports.updateProfileByStudent = asyncHandler(async (req, res) => {
 	if (password) {
 		//update
 		const student = await Student.findByIdAndUpdate(
-			req.userAuth._id,
+			req.auth._id,
 			{
 				email,
 				password: await hashPassword(password),
@@ -173,7 +187,7 @@ exports.updateProfileByStudent = asyncHandler(async (req, res) => {
 	} else {
 		//update
 		const student = await Student.findByIdAndUpdate(
-			req.userAuth._id,
+			req.auth._id,
 			{
 				email,
 			},
@@ -190,9 +204,13 @@ exports.updateProfileByStudent = asyncHandler(async (req, res) => {
 	}
 })
 
-//@desc     Admin updating Students eg: Assigning classes....
-//@route    UPDATE /api/v1/students/:studentID/update/admin
-//@access   Private Admin only
+/**
+ *
+ * @desc    Update Student Profile by Admin
+ * @route   PUT /api/v1/students/:studentID/update/admin
+ * @access  Private Admin only
+ * @example Assigning class, program
+ */
 
 exports.updateStudentProfileByAdmin = asyncHandler(async (req, res) => {
 	const {
@@ -241,13 +259,16 @@ exports.updateStudentProfileByAdmin = asyncHandler(async (req, res) => {
 	})
 })
 
-//@desc     Student taking Exams
-//@route    POST /api/v1/students/exams/:examID/write
-//@access   Private Students only
+/**
+ *
+ * @desc    Student taking Exams
+ * @route   POST /api/v1/students/exams/:examID/write
+ * @access  Private Students only
+ */
 
 exports.writeExamByStudent = asyncHandler(async (req, res) => {
 	// find the registered student
-	const student = await Student.findById(req.userAuth?._id)
+	const student = await Student.findById(req.auth?._id)
 	if (!student) {
 		throw new Error("Student not found")
 	}

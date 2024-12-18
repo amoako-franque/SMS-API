@@ -15,10 +15,10 @@ exports.createProgram = asyncHandler(async (req, res) => {
 	const programCreated = await Program.create({
 		name,
 		description,
-		createdBy: req.userAuth._id,
+		createdBy: req.auth._id,
 	})
 
-	const admin = await Admin.findById(req.userAuth._id)
+	const admin = await Admin.findById(req.auth._id)
 	admin.programs.push(programCreated._id)
 
 	await admin.save()
@@ -60,7 +60,7 @@ exports.updateProgramById = asyncHandler(async (req, res) => {
 		{
 			name,
 			description,
-			createdBy: req.userAuth._id,
+			createdBy: req.auth._id,
 		},
 		{
 			new: true,
